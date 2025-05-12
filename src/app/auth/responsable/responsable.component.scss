@@ -1,0 +1,100 @@
+.layout {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .sidebar {
+    width: 220px;
+    background: #2f3542;
+    padding: 20px;
+    border-right: 1px solid #e1e1e1;
+    color: white;
+  
+    h2 {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  
+    nav h3 {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #a4b0be;
+    }
+  
+    ul {
+      list-style: none;
+      padding: 0;
+  
+      li {
+        margin: 8px 0;
+        padding-left: 8px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+  
+      li:hover {
+        background: #57606f;
+        border-radius: 4px;
+      }
+    }
+  }
+  .account a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #1e90ff;
+    transition: color 0.2s;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 30px;
+    background: white;
+  
+    .header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+  
+    .welcome {
+      h2 {
+        margin-bottom: 20px;
+        font-size: 22px;
+        font-weight: bold;
+      }
+  
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 45px;
+  
+        .action {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+  
+          label {
+            font-weight: bold;
+            width: 180px;
+          }
+  
+          .btn {
+            background-color: #b0afaf;
+            color: rgb(17, 16, 16);
+            padding: 8px 40px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+          }
+  
+          .btn:hover {
+            background-color: #8e8e92;
+          }
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,82 @@
+<div class="app-container">
+  <aside class="sidebar">
+    <h2>Target Metal Works</h2>
+    <nav>
+      <h4>Discover</h4>
+      <ul>
+        <li><a routerLink="/home" routerLinkActive="active">🏠 Home</a></li>
+        <li><a routerLink="/browser" routerLinkActive="active">🔍 Browser</a></li>
+      </ul>
+      <h4>Purchases</h4>
+      <ul>
+        <li><a routerLink="/purchases" routerLinkActive="active">🛒 All purchases</a></li>
+        <li><a routerLink="/drafts" routerLinkActive="active">📝 Drafts</a></li>
+        <li><a routerLink="/history" routerLinkActive="active">🔄 History</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <div class="header">
+      <div class="date">📅 {{ currentDate | date: 'dd/MM/yyyy' }}</div>
+      <div class="account">
+        <a routerLink="/profile" class="account-link">👤 {{ username }}</a>
+      </div>
+    </div>
+
+    <div class="content-container">
+      <h1 class="page-title">Create a New Purchase Request</h1>
+      <p class="welcome-message">Welcome back, {{ username }}!</p>
+
+      <form class="request-form" (ngSubmit)="submitRequest()" #requestForm="ngForm">
+        <div class="form-header">
+          <span class="request-info">Request: {{ requestNumber }}</span>
+          <span class="date-info">Date: {{ currentDate | date: 'dd/MM/yyyy' }}</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" [(ngModel)]="request.category" name="category" required class="form-control">
+              <option value="" disabled selected>Select category</option>
+              <option value="projet">Project</option>
+              <option value="stock">Stock</option>
+              <option value="divers">Miscellaneous</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input id="subject" type="text" [(ngModel)]="request.subject" name="subject" 
+                   placeholder="Enter subject" required class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="details">Request Details</label>
+            <input id="details" type="text" [(ngModel)]="request.details" name="details" 
+                   placeholder="Describe your request" required class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="designation">Designation</label>
+            <input id="designation" type="text" [(ngModel)]="request.designation" name="designation" 
+                   placeholder="Enter designation" required class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" [(ngModel)]="request.qte" name="qte"
+                   min="1" required class="form-control" placeholder="0">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="saveAsDraft()">Save as Draft</button>
+          <button type="submit" class="btn btn-primary" [disabled]="!requestForm.form.valid">
+            Submit Request
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>

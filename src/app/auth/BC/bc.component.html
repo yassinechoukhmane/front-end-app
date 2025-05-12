@@ -1,0 +1,77 @@
+<div class="container">
+    <div class="sidebar">
+      <h1 class="title">Target Metal Works</h1>
+      
+      <h2>Discover</h2>
+      <ul>
+        <li>Home</li>
+      </ul>
+      
+      <h2>Requests</h2>
+      <ul>
+        <li>all requests</li>
+        <li>approved requests</li>
+        <li>rejected requests</li>
+      </ul>
+      
+      <h2>Bon de commande </h2>
+      <ul>
+        <li>Tous</li>
+        <li><a routerLink="/bcdrafts" routerLinkActive="active">Drafts</a></li>
+      </ul>
+      <hr>
+      
+      <div class="date">{{currentDate}}</div>
+      
+      <div class="welcome">welcome Mr / Mrs </div>
+    </div>
+    
+    <div class="main-content">
+      <h1>CREATING BC :</h1>
+      
+      <div class="form-section">
+        <table class="form-table">
+          <tr>
+            <th>Bon de commande</th>
+            <th>Demande achat id</th>
+            <th>Date</th>
+          </tr>
+          <tr>
+            <td><input type="text" [(ngModel)]="numeroBonCommande" placeholder="Numéro du bon de commande" /></td>
+            <td><input type="text" [(ngModel)]="demandeAchatId" placeholder="Demande achat id" /></td>
+            <td>{{ currentDate | date: 'dd/MM/yyyy' }}</td>
+          </tr>
+        </table>
+        
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Status</th>
+              <th>Fournisseur id</th>
+              <th>D.Projet id</th>
+              <th>PRIX TOTAL HT</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" [(ngModel)]="reference" placeholder="reference"></td>
+              <td><input type="text" [(ngModel)]="status" placeholder="status"></td>
+              <td><input type="text" [(ngModel)]="fournisseurId" placeholder=""></td>
+              <td><input type="text" [(ngModel)]="projetId" placeholder=""></td>
+              <td><input type="text" [(ngModel)]="prixTotal" placeholder="Prix"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="button-group">
+          <button class="save-btn draft" (click)="saveAsDraft()">ENREGISTRER COMME BROUILLON</button>
+          <button class="save-btn final" (click)="saveOrder()">SAVE</button>
+        </div>
+        
+        <div *ngIf="message" [ngClass]="messageType" class="message-box">
+          {{ message }}
+        </div>
+        
+      </div>
+    </div>
+  </div>

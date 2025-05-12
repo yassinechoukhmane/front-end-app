@@ -1,0 +1,30 @@
+
+<div class="auth-container">
+  <img src="/assets/target.png" alt="Votre Logo" class="login-logo">
+  <h2>CONNEXION</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input type="email" placeholder="Email">
+    </div>
+    <div class="form-group password-container">
+      <input [type]="showPassword ? 'text' : 'password'" placeholder="Mot de passe">
+      <button type="button" class="toggle-password" (click)="togglePassword()">
+        <span *ngIf="!showPassword">👁️</span>
+        <span *ngIf="showPassword">👁️‍🗨️</span>
+      </button>
+    </div>
+    <button type="submit">Se connecter</button>
+  </form>
+  
+  <div class="auth-footer">
+    <p>Don't have an account? 
+      <a routerLink="/register">Create a new account</a>
+    </p>
+    
+   
+    
+    <p class="terms">By clicking continue, you agree to our 
+      <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+    </p>
+  </div>
+</div>

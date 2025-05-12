@@ -1,0 +1,70 @@
+<div class="layout">
+    <aside class="sidebar">
+      <h2>Target Metal Works</h2>
+      <nav>
+        <h3>Discover</h3>
+        <ul>
+          <li><i class="icon">🏠</i> Home</li>
+          <li><i class="icon">🔍</i> Browser</li>
+        </ul>
+  
+        <h3>Requests</h3>
+        <ul>
+          <li>🛒 all requests</li>
+          <li>✅ approved requests</li>
+          <li>❌ rejected requests</li>
+        </ul>
+  
+        <h3>FOURNISSEUR</h3>
+        <ul>
+          <li>🛒 All Fournisseur</li>
+          <li>📄 Drafts</li>
+          <li>🕘 History</li>
+        </ul>
+  
+        <h3>Purchases</h3>
+        <ul>
+          <li>🛒 All purchases</li>
+          <li>📄 Drafts</li>
+          <li>🕘 History</li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <main class="main-content">
+      <div class="header">
+        <span class="date">{{ today | date: 'dd/MM/yyyy' }}</span>
+        <div class="account">
+          <a routerLink="/profile" class="account-link">👤 {{ username }}</a>
+        </div>
+        
+      </div>
+  
+      <div class="welcome">
+        <p> welcome Mr / Mrs </p>
+        <h2>HOME :</h2>
+  
+        <div class="actions">
+          <div class="action">
+            <label>Latest Requests :</label>
+            <button class="btn" (click)="goToLatestRequests()">INSPECT</button>
+
+          </div>
+          <div class="action">
+            <label>CREATE A BC :</label>
+            <button class="btn" (click)="goToCreateBC()">CREATE</button>
+          </div>
+          <div class="action">
+            <label>CREATE PROJET :</label>
+            <button class="btn" (click)="goToCreatePro()">CREATE</button>
+
+          </div>
+          <div class="action">
+            <label>ADD FOURNISSEUR :</label>
+            <button class="btn" (click)="goToAddFournisseur()">ADD</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  

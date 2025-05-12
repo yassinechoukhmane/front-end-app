@@ -1,0 +1,81 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .fournisseur-table {
+    border: 2px solid black;
+    border-collapse: collapse;
+    width: 500px;
+    margin-bottom: 30px;
+  }
+  
+  .fournisseur-table td {
+    border: 1px solid black;
+    padding: 20px;
+  }
+  
+  .label-cell {
+    width: 50%;
+    background-color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #f2f2f2;
+    border: none;
+  }
+  
+  .button-wrapper {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    background-color: #3b78c7;
+    color: white;
+    padding: 12px 40px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #285ba0;
+  }
+  
+  .success-message {
+    background-color: #e6ffed;          // Vert clair de fond
+    border: 1px solid #27ae60;          // Bord vert plus foncé
+    color: #2d7a46;                     // Texte vert foncé
+    padding: 12px 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: opacity 1s ease-in-out, transform 0.5s ease;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .success-message.hidden {
+    opacity: 0;
+    transform: translateY(-10px); // effet "disparaître vers le haut"
+  }
+  
+  

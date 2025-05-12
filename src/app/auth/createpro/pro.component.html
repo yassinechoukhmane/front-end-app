@@ -1,0 +1,77 @@
+<div class="container">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <h1>Target Metal Works</h1>
+  
+      <div class="menu-section">
+        <h2>Discover</h2>
+        <ul>
+          <li>Home</li>
+          <li>Browser</li>
+        </ul>
+      </div>
+  
+      <div class="menu-section">
+        <h2>Requests</h2>
+        <ul>
+          <li>All requests</li>
+          <li>Approved requests</li>
+          <li>Rejected requests</li>
+        </ul>
+      </div>
+  
+      <div class="menu-section">
+        <h2>Purchases</h2>
+        <ul>
+          <li>All purchases</li>
+          <li>Drafts</li>
+          <li>History</li>
+        </ul>
+      </div>
+    </div>
+  
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <div class="header-right">
+        <p>{{ formattedDate }}</p>
+      </div>
+      
+      <div class="welcome-message">
+        <p>Welcome Mr / Mrs</p>
+      </div>
+  
+      <h2>CREATE DEMANDE DE PROJET :</h2>
+      <h3>NEW PROJET :</h3>
+      
+      <!-- Nouveau: Champs juste au-dessus du tableau -->
+      <div class="request-fields">
+        <div class="request-id-field">
+          <label>Demande d'achat ID:</label>
+          <input type="text" [(ngModel)]="demandeAchatId">
+        </div>
+        <div class="request-date-field">
+          <label>Date:</label>
+          <input type="text" [(ngModel)]="formattedDate" [value]="formattedDate" readonly>
+        </div>
+      </div>
+  
+      <table>
+        <thead>
+          <tr>
+            <th>NAME AND TITLE</th>
+            <th>DESCRIPTION</th>
+            <th>PROJET ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" [(ngModel)]="project.name" placeholder="NAME AND TITLE" /></td>
+            <td><input type="text" [(ngModel)]="project.description" placeholder="DESCRIPTION" /></td>
+            <td><input type="text" [(ngModel)]="project.id" placeholder="PROJET ID" /></td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <button (click)="saveProject()">SAVE</button>
+    </div>
+  </div>

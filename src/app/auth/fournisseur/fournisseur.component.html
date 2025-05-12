@@ -1,0 +1,34 @@
+<div class="page-container">
+    <h2>ADD FOURNISSEUR :</h2>
+  
+    <form (ngSubmit)="onSubmit()">
+      <table class="fournisseur-table">
+        <tr>
+          <td class="label-cell"><strong>FOURNISSEUR NAME</strong></td>
+          <td>
+            <input type="text" [(ngModel)]="name" name="name" placeholder="NAME" />
+          </td>
+        </tr>
+        <tr>
+          <td class="label-cell"><strong>PHONE NUMBER</strong></td>
+          <td>
+            <input type="text" [(ngModel)]="phone" name="phone" placeholder="+212..." />
+          </td>
+        </tr>
+      </table>
+  
+      <div class="button-wrapper">
+        <button type="submit" class="btn">ADD</button>
+      </div>
+  
+      <p 
+  class="success-message" 
+  [class.hidden]="hideMessage"
+  *ngIf="successMessage"
+>
+  {{ successMessage }}
+</p>
+
+    </form>
+  </div>
+  
