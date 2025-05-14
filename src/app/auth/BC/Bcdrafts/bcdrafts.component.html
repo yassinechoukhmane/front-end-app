@@ -1,0 +1,26 @@
+<div class="drafts-container">
+  <h2>My Drafts</h2>
+  <div *ngIf="message" class="alert-message">
+{{ message }}
+</div>
+  <div *ngIf="drafts.length === 0" class="no-drafts">
+    No drafts saved yet.
+  </div>
+  
+  <div *ngFor="let draft of drafts" class="draft-item">
+    <div class="draft-header">
+      <span class="draft-number">{{ draft.requestNumber }}</span>
+      <span class="draft-date">{{ draft.date | date:'dd/MM/yyyy' }}</span>
+    </div>
+    <div class="draft-details">
+      <p><strong>Subject:</strong> {{ draft.subject }}</p>
+      <p><strong>Category:</strong> {{ draft.category }}</p>
+      <p><strong>Quantity:</strong> {{ draft.qte }}</p>
+    </div>
+    <div class="draft-actions">
+      <button (click)="editDraft(draft)" class="btn btn-edit">Edit</button>
+      <button (click)="deleteDraft(draft.requestNumber)" class="btn btn-delete">Delete</button>
+      <button (click)="approveDraft(draft)" class="btn btn-approve">Approve</button>
+    </div>
+  </div>
+</div>

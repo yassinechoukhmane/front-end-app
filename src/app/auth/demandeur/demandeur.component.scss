@@ -245,3 +245,32 @@
   justify-content: flex-end;
   margin-top: 10px;
 }
+.menu-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #dcdde1;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  .icon {
+    font-size: 16px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  &:hover {
+    background-color: #57606f;
+    transform: translateX(5px);
+  }
+
+  &.active {
+    background-color: #57606f;
+    color: #ffffff;
+  }
+}

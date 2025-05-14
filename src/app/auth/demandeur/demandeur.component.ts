@@ -95,5 +95,8 @@ export class DemandeurComponent implements OnInit {
     existingRequests.push(requestData);
     localStorage.setItem(storageKey, JSON.stringify(existingRequests));
   }
+  goToPurchases() {
+    this.router.navigate(['/purchases']);
+  }
   
 }

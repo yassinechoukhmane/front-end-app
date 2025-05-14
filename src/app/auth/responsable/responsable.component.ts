@@ -37,5 +37,13 @@ export class ResponsableComponent implements OnInit {
   goToLatestRequests() {
     this.router.navigate(['/latest-requests']);
   }
-
+  goToHome() {
+    this.router.navigate(['/responsable']);
+  }
+  goToPurchases() {
+    this.router.navigate(['/purchases']);
+  }
+  goToFournisseurs() {
+    this.router.navigate(['/fournisseurs']);
+  }
 }

@@ -3,6 +3,21 @@
     height: 100vh;
     font-family: Arial, sans-serif;
   }
+  .nav-link {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    color: #dcdde1;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+  
+    &:hover {
+      background-color: #57606f;
+      transform: translateX(5px);
+    }
+  }
   
   .sidebar {
     width: 220px;
@@ -97,4 +112,5 @@
       }
     }
   }
+  
   

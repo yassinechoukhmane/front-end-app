@@ -4,14 +4,17 @@
     <nav>
       <h4>Discover</h4>
       <ul>
-        <li><a routerLink="/home" routerLinkActive="active">🏠 Home</a></li>
-        <li><a routerLink="/browser" routerLinkActive="active">🔍 Browser</a></li>
+        <li><a routerLink="/demandeur" routerLinkActive="active">🏠 Home</a></li>
       </ul>
       <h4>Purchases</h4>
       <ul>
-        <li><a routerLink="/purchases" routerLinkActive="active">🛒 All purchases</a></li>
+        <li>
+          <a class="menu-button">
+            <span class="icon">🛒</span>
+            <span class="text" (click)="goToPurchases()">All purchases</span>
+          </a>
+        </li>
         <li><a routerLink="/drafts" routerLinkActive="active">📝 Drafts</a></li>
-        <li><a routerLink="/history" routerLinkActive="active">🔄 History</a></li>
       </ul>
     </nav>
   </aside>

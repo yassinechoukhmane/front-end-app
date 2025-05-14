@@ -211,6 +211,12 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+  .nav-link {
+    cursor: pointer;
+    color: white;
+    &:hover {
+      color: #b3d4f5;
+    }
+  }
   
   

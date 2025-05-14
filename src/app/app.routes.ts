@@ -10,10 +10,17 @@ import { BcDraftsComponent } from './auth/BC/Bcdrafts/Bcdrafts.component';
 import {  CreateproComponent } from './auth/createpro/pro.component';
 import {  AddFournisseurComponent } from './auth/fournisseur/fournisseur.component';
 import { LatestRequestsComponent } from './auth/request/request.component';
+import { PurchasesComponent } from './auth/demandeur/purchase/purchase.component';
+import { ProjectListComponent } from './auth/createpro/projectlist.component';
+
 export const routes: Routes = [
   { 
     path: 'demandeur',
     component: DemandeurComponent,
+  },
+  { 
+    path: 'projectlist', 
+    component: ProjectListComponent 
   },
   { 
     path: 'profile', 
@@ -43,6 +50,10 @@ export const routes: Routes = [
   },
 
   { path: 'latest-requests', component: LatestRequestsComponent 
+},
+{ 
+  path: 'purchases', 
+  component: PurchasesComponent 
 },
   
   { path: 'login', component: LoginComponent },

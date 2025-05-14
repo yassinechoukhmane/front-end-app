@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { DatePipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-purchase-order-create',
   standalone: true,
@@ -22,7 +22,7 @@ export class BcComponent {
   messageType: 'success' | 'error' | '' = '';
   numeroBonCommande: string = '';
 
-  constructor(private datePipe: DatePipe) {
+  constructor(private datePipe: DatePipe, private router: Router  ) {
     this.currentDate = this.datePipe.transform(new Date(), 'dd/MM/yyyy') || '';
     const loadedDraft = localStorage.getItem('currentDraft');
 if (loadedDraft) {
@@ -74,5 +74,7 @@ if (loadedDraft) {
     this.messageType = 'success';
     setTimeout(() => (this.message = ''), 3000);
   }
-  
+  goToDrafts() {
+    this.router.navigate(['/bcdrafts']);
+  }
 }

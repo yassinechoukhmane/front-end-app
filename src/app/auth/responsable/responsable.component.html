@@ -4,29 +4,17 @@
       <nav>
         <h3>Discover</h3>
         <ul>
-          <li><i class="icon">🏠</i> Home</li>
-          <li><i class="icon">🔍</i> Browser</li>
+          <li><span class="nav-link" (click)="goToHome()"> Home</span></li>
         </ul>
   
         <h3>Requests</h3>
         <ul>
-          <li>🛒 all requests</li>
-          <li>✅ approved requests</li>
-          <li>❌ rejected requests</li>
+          <li><span class="nav-link" (click)="goToPurchases()">All requests</span></li>
         </ul>
   
         <h3>FOURNISSEUR</h3>
         <ul>
-          <li>🛒 All Fournisseur</li>
-          <li>📄 Drafts</li>
-          <li>🕘 History</li>
-        </ul>
-  
-        <h3>Purchases</h3>
-        <ul>
-          <li>🛒 All purchases</li>
-          <li>📄 Drafts</li>
-          <li>🕘 History</li>
+          <li><span class="nav-link" (click)="goToFournisseurs()"> All Fournisseur</span></li>
         </ul>
       </nav>
     </aside>
