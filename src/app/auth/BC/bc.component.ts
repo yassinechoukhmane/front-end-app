@@ -1,80 +1,121 @@
-import { Component } from '@angular/core';
-import { DatePipe, CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 @Component({
-  selector: 'app-purchase-order-create',
+  selector: 'app-bc',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './bc.component.html',
-  styleUrls: ['./bc.component.scss'],
-  providers: [DatePipe]
+  styleUrls: ['./bc.component.scss']
 })
-export class BcComponent {
+export class BcComponent implements OnInit {
+  currentDate = new Date();
   reference: string = '';
-  status: string = '';
   fournisseurId: string = '';
-  projetId: string = '';
-  prixTotal: string = '';
-  currentDate: string;
   demandeAchatId: string = '';
+  projetId: string = '';
+  montantTotal: number = 0;
   message: string = '';
-  messageType: 'success' | 'error' | '' = '';
-  numeroBonCommande: string = '';
+  messageType: string = '';
+  activeTab: string = 'home';
 
-  constructor(private datePipe: DatePipe, private router: Router  ) {
-    this.currentDate = this.datePipe.transform(new Date(), 'dd/MM/yyyy') || '';
-    const loadedDraft = localStorage.getItem('currentDraft');
-if (loadedDraft) {
-  const draft = JSON.parse(loadedDraft);
-  this.reference = draft.reference;
-  this.status = draft.status;
-  this.fournisseurId = draft.fournisseurId;
-  this.projetId = draft.projetId;
-  this.prixTotal = draft.prixTotal;
-  this.demandeAchatId = draft.demandeAchatId;
-  localStorage.removeItem('currentDraft'); // Nettoyer après chargement
-}
+  constructor(private router: Router) {}
 
+  ngOnInit() {
+    // Vérifier s'il y a un brouillon en cours d'édition
+    const currentDraft = localStorage.getItem('currentBcDraft');
+    if (currentDraft) {
+      const draft = JSON.parse(currentDraft);
+      this.reference = draft.reference;
+      this.fournisseurId = draft.fournisseurId;
+      this.demandeAchatId = draft.demandeAchatId;
+      this.projetId = draft.projetId;
+      this.montantTotal = draft.montantTotal;
+      // Supprimer le brouillon en cours d'édition
+      localStorage.removeItem('currentBcDraft');
+    }
+  }
+
+  saveAsDraft() {
+    const draft = {
+      reference: this.reference,
+      date: this.currentDate,
+      fournisseurId: this.fournisseurId,
+      demandeAchatId: this.demandeAchatId,
+      projetId: this.projetId,
+      montantTotal: this.montantTotal,
+      status: 'draft'
+    };
+
+    const drafts = JSON.parse(localStorage.getItem('bcDrafts') || '[]');
+    drafts.push(draft);
+    localStorage.setItem('bcDrafts', JSON.stringify(drafts));
+
+    this.message = 'Brouillon enregistré avec succès';
+    this.messageType = 'success';
+    this.resetForm();
   }
 
   saveOrder() {
-    console.log('Order saved:', {
-      reference: this.reference,
-      status: this.status,
-      fournisseurId: this.fournisseurId,
-      projetId: this.projetId,
-      prixTotal: this.prixTotal,
-      date: this.currentDate
-    });
-    this.message = 'Bon de commande enregistré avec succès !';
-    this.messageType = 'success';
-     setTimeout(() => {
-      this.message = '';
-    },     3000);
+    if (!this.validateForm()) {
+      this.message = 'Veuillez remplir tous les champs';
+      this.messageType = 'error';
+      return;
+    }
 
-  }
-  saveAsDraft() {
-    const draft = {
-      id: Date.now(), // identifiant unique
+    const order = {
       reference: this.reference,
-      status: this.status,
+      date: this.currentDate,
       fournisseurId: this.fournisseurId,
-      projetId: this.projetId,
-      prixTotal: this.prixTotal,
       demandeAchatId: this.demandeAchatId,
-      date: this.currentDate
+      projetId: this.projetId,
+      montantTotal: this.montantTotal,
+      status: 'submitted'
     };
-  
-    const drafts = JSON.parse(localStorage.getItem('drafts') || '[]');
-    drafts.push(draft);
-    localStorage.setItem('drafts', JSON.stringify(drafts));
-  
-    this.message = 'Brouillon enregistré avec succès !';
+
+    const orders = JSON.parse(localStorage.getItem('bons_commande') || '[]');
+    orders.push(order);
+    localStorage.setItem('bons_commande', JSON.stringify(orders));
+
+    this.message = 'Bon de commande enregistré avec succès';
     this.messageType = 'success';
-    setTimeout(() => (this.message = ''), 3000);
+    this.resetForm();
   }
+
+  validateForm(): boolean {
+    return Boolean(this.reference) && 
+           Boolean(this.fournisseurId) && 
+           Boolean(this.demandeAchatId) && 
+           Boolean(this.projetId) && 
+           this.montantTotal > 0;
+  }
+
+  resetForm() {
+    this.reference = '';
+    this.fournisseurId = '';
+    this.demandeAchatId = '';
+    this.projetId = '';
+    this.montantTotal = 0;
+  }
+
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
+
+  goToHome() {
+    this.setActiveTab('home');
+    this.router.navigate(['/responsable']);
+  }
+
+  goToList() {
+    this.setActiveTab('all');
+    this.router.navigate(['/bclist']);
+  }
+
   goToDrafts() {
+    this.setActiveTab('drafts');
     this.router.navigate(['/bcdrafts']);
   }
 }

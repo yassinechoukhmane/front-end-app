@@ -5,19 +5,33 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserService {
-  private currentUser = {
-    username: 'test user',
-    email: 'test.user@example.com',
-  };
-
+  private currentUser: any = null;
   private lastRoute: string = '';
 
-  getCurrentUser() {
-    return this.currentUser;
+  constructor() {
+    // Charger l'utilisateur depuis le localStorage au démarrage
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      this.currentUser = JSON.parse(savedUser);
+    }
   }
 
-  updateUser(userData: any) {
-    this.currentUser = { ...this.currentUser, ...userData };
+  getCurrentUser() {
+    return this.currentUser || { username: 'Test User' };
+  }
+
+  setCurrentUser(user: any) {
+    this.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  updateUsername(username: string) {
+    if (this.currentUser) {
+      this.currentUser.username = username;
+      localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+    } else {
+      this.setCurrentUser({ username });
+    }
   }
 
   setLastRoute(route: string) {
@@ -25,6 +39,6 @@ export class UserService {
   }
 
   getLastRoute(): string {
-    return this.lastRoute || '/demandeur'; // défaut
+    return this.lastRoute;
   }
 }

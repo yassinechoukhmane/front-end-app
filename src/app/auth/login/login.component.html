@@ -1,30 +1,71 @@
-
 <div class="auth-container">
-  <img src="/assets/target.png" alt="Votre Logo" class="login-logo">
+  <img src="/assets/target.png" alt="Target Metal Works">
   <h2>CONNEXION</h2>
+  
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <input type="email" placeholder="Email">
+      <input 
+        type="email" 
+        [(ngModel)]="email" 
+        name="email" 
+        placeholder="Email"
+        required>
     </div>
+
     <div class="form-group password-container">
-      <input [type]="showPassword ? 'text' : 'password'" placeholder="Mot de passe">
-      <button type="button" class="toggle-password" (click)="togglePassword()">
-        <span *ngIf="!showPassword">👁️</span>
-        <span *ngIf="showPassword">👁️‍🗨️</span>
-      </button>
+      <input 
+        [type]="showPassword ? 'text' : 'password'" 
+        [(ngModel)]="password" 
+        name="password" 
+        placeholder="Mot de passe"
+        required>
+      <span class="toggle-password" (click)="togglePassword()">
+        {{ showPassword ? '👁️' : '👁️' }}
+      </span>
     </div>
+
     <button type="submit">Se connecter</button>
   </form>
   
-  <div class="auth-footer">
-    <p>Don't have an account? 
-      <a routerLink="/register">Create a new account</a>
-    </p>
+  <div class="forgot-password">
+    <a (click)="forgotPassword()">Mot de passe oublié ?</a>
+  </div>
+
+  <div class="register-link">
+    Vous n'avez pas de compte ? 
+    <a [routerLink]="['/register']">Créer un compte</a>
+  </div>
+
+  <div class="terms">
+    En continuant, vous acceptez nos 
+    <a href="#">Conditions d'utilisation</a> et notre 
+    <a href="#">Politique de confidentialité</a>
+  </div>
+</div>
+
+<!-- Modal de réinitialisation de mot de passe -->
+<div class="reset-password-modal" *ngIf="showResetModal">
+  <div class="modal-content">
+    <div class="logo-container">
+      <img src="/assets/target.png" alt="Target Metal Works">
+    </div>
     
-   
+    <h3>Réinitialisation du mot de passe</h3>
     
-    <p class="terms">By clicking continue, you agree to our 
-      <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-    </p>
+    <p>Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
+    
+    <div class="form-group">
+      <input 
+        type="email" 
+        [(ngModel)]="resetEmail" 
+        name="resetEmail" 
+        placeholder="Votre adresse email"
+        required>
+    </div>
+
+    <div class="modal-actions">
+      <button (click)="sendResetLink()">Envoyer</button>
+      <button class="cancel" (click)="closeResetModal()">Annuler</button>
+    </div>
   </div>
 </div>

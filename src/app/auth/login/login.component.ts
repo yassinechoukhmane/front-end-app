@@ -3,47 +3,99 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoginResponse } from '../models/auth.models';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.old.scss']
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class LoginComponent {
-  showPassword = false;
-  password = '';
-  email = '';
+  email: string = '';
+  password: string = '';
+  resetEmail: string = '';
+  errorMessage: string = '';
+  showForgotPassword: boolean = false;
+  resetSent: boolean = false;
+  showPassword: boolean = false;
+  showResetModal: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  onSubmit() {
+    if (this.email && this.password) {
+      this.authService.login(this.email, this.password).subscribe(
+        (response: LoginResponse) => {
+          this.router.navigate(['/dashboard']);
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Erreur de connexion:', error);
+        }
+      );
+    }
+  }
+
+  toggleForgotPassword() {
+    this.showForgotPassword = !this.showForgotPassword;
+    this.resetSent = false;
+    this.errorMessage = '';
+    this.resetEmail = '';
+  }
+
+  sendResetEmail() {
+    if (!this.resetEmail) {
+      this.errorMessage = 'Veuillez entrer votre email';
+      return;
+    }
+
+    if (!this.isValidEmail(this.resetEmail)) {
+      this.errorMessage = 'Veuillez entrer un email valide';
+      return;
+    }
+
+    setTimeout(() => {
+      this.resetSent = true;
+      this.errorMessage = '';
+    }, 1500);
+  }
+
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit(event?: Event) {
-    if (event) {
-      event.preventDefault(); // Empêche le rechargement
-    }
+  forgotPassword() {
+    this.showResetModal = true;
+  }
 
-    // 🔐 Définir le rôle en fonction de l'email (à adapter à ton backend plus tard)
-    const role = this.email.includes('responsable') ? 'responsable' : 'demandeur';
+  closeResetModal() {
+    this.showResetModal = false;
+    this.resetEmail = '';
+  }
 
-    // 💾 Sauvegarde du rôle et token simulé
-    const user = {
-      email: this.email,
-      role: role
-    };
-
-    localStorage.setItem('authToken', 'simulated-token');
-    localStorage.setItem('user', JSON.stringify(user));
-
-    // 🚀 Redirection selon le rôle
-    if (role === 'responsable') {
-      this.router.navigate(['/responsable']);
-    } else {
-      this.router.navigate(['/demandeur']);
+  async sendResetLink() {
+    if (this.resetEmail) {
+      try {
+        await this.authService.sendPasswordResetEmail(this.resetEmail);
+        alert('Un email de réinitialisation a été envoyé à votre adresse.');
+        this.closeResetModal();
+      } catch (error: unknown) {
+        alert('Une erreur est survenue. Veuillez réessayer.');
+        if (error instanceof Error) {
+          console.error('Erreur lors de la réinitialisation:', error.message);
+        }
+      }
     }
   }
 }

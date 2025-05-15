@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { UserService } from '../demandeur/user.service';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { ResponsableUserService } from './responsable-user.service';
 
 @Component({
   selector: 'app-responsable',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './responsable.component.html',
-  styleUrls: ['./responsable.component.scss']
+  styleUrls: ['./responsable.component.scss'],
+  providers: [ResponsableUserService]
 })
 export class ResponsableComponent implements OnInit {
   today = new Date();
   username: string = '';
 
   constructor(
-    private userService: UserService,
-    private router: Router 
+    private userService: ResponsableUserService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,11 +25,15 @@ export class ResponsableComponent implements OnInit {
     this.username = user.username;
     this.userService.setLastRoute('/responsable');
   }
+
   goToCreateBC() {
     this.router.navigate(['/create-bc']); 
   }
   goToCreatePro() {
     this.router.navigate(['/createpro']);
+  }
+  goToCreateDemandeProjet() {
+    this.router.navigate(['/create-demande-projet']);
   }
   goToAddFournisseur() {
     this.router.navigate(['/add-fournisseur']);
@@ -44,6 +48,14 @@ export class ResponsableComponent implements OnInit {
     this.router.navigate(['/purchases']);
   }
   goToFournisseurs() {
-    this.router.navigate(['/fournisseurs']);
+    this.router.navigate(['/fournisseurlist']);
+  }
+  goToProfile() {
+    console.log('Navigation vers le profil responsable...'); // Pour debug
+    this.router.navigate(['/responsable-profile']).then(() => {
+      console.log('Navigation terminée'); // Pour debug
+    }).catch(err => {
+      console.error('Erreur de navigation:', err); // Pour debug
+    });
   }
 }

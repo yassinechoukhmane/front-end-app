@@ -4,13 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../demandeur/user.service';
 import { RouterModule } from '@angular/router';
+import { DemandeurUserService } from './demandeur-user.service';
 
 @Component({
   selector: 'app-demandeur',
   standalone: true,
   templateUrl: './demandeur.component.html',
   styleUrls: ['./demandeur.component.scss'],
-  imports: [FormsModule, CommonModule,RouterModule]
+  imports: [FormsModule, CommonModule,RouterModule],
+  providers: [
+    {
+      provide: DemandeurUserService,
+      useClass: DemandeurUserService
+    }
+  ]
 })
 export class DemandeurComponent implements OnInit {
   currentDate: Date = new Date();
@@ -18,32 +25,28 @@ export class DemandeurComponent implements OnInit {
   requestNumber: string = '';
 
   request = {
-    category: 'projet',
-    subject: '',
+    qte: 0,
     details: '',
-    designation: '',
-    qte: 1
+    requestNumber: '',
+    date: new Date()
   };
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(
+    private userService: DemandeurUserService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const user = this.userService.getCurrentUser();
     this.username = user.username;
     this.userService.setLastRoute('/demandeur');
   
-    const draft = localStorage.getItem('currentDraft');
-    if (draft) {
-      const draftData = JSON.parse(draft);
-      this.request = {
-        category: draftData.category,
-        subject: draftData.subject,
-        details: draftData.details,
-        designation: draftData.designation,
-        qte: draftData.qte
-      };
-      this.requestNumber = draftData.requestNumber;
-      localStorage.removeItem('currentDraft'); // Nettoyer après chargement
+    // Vérifier s'il y a un brouillon en cours d'édition
+    const currentDraft = localStorage.getItem('currentDraft');
+    if (currentDraft) {
+      this.request = JSON.parse(currentDraft);
+      // Supprimer le brouillon en cours d'édition
+      localStorage.removeItem('currentDraft');
     } else {
       this.generateRequestNumber();
     }
@@ -56,45 +59,53 @@ export class DemandeurComponent implements OnInit {
   }
 
   submitRequest() {
-    if (this.request.qte < 1) {
-      alert("La quantité doit être au moins 1");
-      return;
-    }
-  
     const completeRequest = {
       ...this.request,
       requestNumber: this.requestNumber,
-      date: this.currentDate,
-      status: 'submitted'
+      date: new Date(),
+      status: 'pending'
     };
-  
-    this.saveToLocalStorage(completeRequest, 'purchaseRequests');
-    localStorage.removeItem('currentDraft'); // ❗️ Nettoyer le brouillon temporaire
-    alert('Demande enregistrée avec succès!');
-    this.router.navigate(['/purchases']);
+
+    // Sauvegarder la requête
+    const requests = JSON.parse(localStorage.getItem('purchaseRequests') || '[]');
+    requests.push(completeRequest);
+    localStorage.setItem('purchaseRequests', JSON.stringify(requests));
+
+    // Réinitialiser le formulaire
+    this.request = {
+      qte: 0,
+      details: '',
+      requestNumber: '',
+      date: new Date()
+    };
+    
+    alert('Request submitted successfully!');
   }
-  
 
   saveAsDraft() {
-    const draftRequest = {
+    const draft = {
       ...this.request,
       requestNumber: this.requestNumber,
-      date: this.currentDate,
+      date: new Date(),
       status: 'draft'
     };
 
-    this.saveToLocalStorage(draftRequest, 'draftRequests');
-    localStorage.removeItem('currentDraft');
-    alert('Brouillon enregistré!');
-    this.router.navigate(['/drafts']);
+    // Sauvegarder le brouillon
+    const drafts = JSON.parse(localStorage.getItem('draftRequests') || '[]');
+    drafts.push(draft);
+    localStorage.setItem('draftRequests', JSON.stringify(drafts));
+
+    // Réinitialiser le formulaire
+    this.request = {
+      qte: 0,
+      details: '',
+      requestNumber: '',
+      date: new Date()
+    };
+
+    alert('Draft saved successfully!');
   }
 
-  private saveToLocalStorage(requestData: any, storageKey: string) {
-    const storedData = localStorage.getItem(storageKey);
-    const existingRequests = storedData ? JSON.parse(storedData) : [];
-    existingRequests.push(requestData);
-    localStorage.setItem(storageKey, JSON.stringify(existingRequests));
-  }
   goToPurchases() {
     this.router.navigate(['/purchases']);
   }

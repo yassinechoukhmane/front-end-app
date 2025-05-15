@@ -1,39 +1,96 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-fournisseur',
-  templateUrl: './fournisseur.component.html',
-  styleUrls: ['./fournisseur.component.scss'],
+  selector: 'app-fournisseur',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ]
+  imports: [CommonModule, FormsModule],
+  templateUrl: './fournisseur.component.html',
+  styleUrls: ['./fournisseur.component.scss']
 })
-export class AddFournisseurComponent {
-  name = '';
-  phone = '';
-  successMessage = '';
-  hideMessage: boolean = false;  // ✅ ajout de la propriété
+export class AddFournisseurComponent implements OnInit {
+  currentDate = new Date();
+  message: string = '';
+  messageType: string = '';
 
-  onSubmit(): void {
-    console.log('Fournisseur ajouté :', { name: this.name, phone: this.phone });
-    this.successMessage = `Fournisseur "${this.name}" a été bien ajouté !`;
-    this.hideMessage = false;
+  fournisseur = {
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    date: new Date()
+  };
 
-    this.name = '';
-    this.phone = '';
+  constructor(private router: Router) {}
 
-    // Masquer progressivement après 3s
+  ngOnInit() {
+    // Vérifier s'il y a un fournisseur en cours d'édition
+    const editingFournisseur = localStorage.getItem('editingFournisseur');
+    if (editingFournisseur) {
+      this.fournisseur = JSON.parse(editingFournisseur);
+      localStorage.removeItem('editingFournisseur');
+    }
+  }
+
+  saveFournisseur() {
+    if (!this.validateForm()) {
+      this.showMessage('Veuillez remplir tous les champs correctement', 'error');
+      return;
+    }
+
+    const fournisseurs = JSON.parse(localStorage.getItem('fournisseurs') || '[]');
+    
+    // Vérifier si le numéro de téléphone existe déjà
+    if (fournisseurs.some((f: any) => f.phone === this.fournisseur.phone)) {
+      this.showMessage('Ce numéro de téléphone existe déjà', 'error');
+      return;
+    }
+
+    fournisseurs.push({
+      ...this.fournisseur,
+      date: new Date()
+    });
+    
+    localStorage.setItem('fournisseurs', JSON.stringify(fournisseurs));
+    this.showMessage('Fournisseur enregistré avec succès', 'success');
+    this.resetForm();
+  }
+
+  validateForm(): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/; // Pour un numéro à 10 chiffres
+
+    return Boolean(this.fournisseur.name) &&
+           phoneRegex.test(this.fournisseur.phone) &&
+           Boolean(this.fournisseur.address) &&
+           emailRegex.test(this.fournisseur.email);
+  }
+
+  showMessage(msg: string, type: string) {
+    this.message = msg;
+    this.messageType = type;
     setTimeout(() => {
-      this.hideMessage = true;
+      this.message = '';
     }, 3000);
+  }
 
-    // Supprimer le message après 4s
-    setTimeout(() => {
-      this.successMessage = '';
-    }, 4000);
+  resetForm() {
+    this.fournisseur = {
+      name: '',
+      phone: '',
+      email: '',
+      address: '',
+      date: new Date()
+    };
+  }
+
+  goToHome() {
+    this.router.navigate(['/responsable']);
+  }
+
+  goToList() {
+    this.router.navigate(['/fournisseurlist']);
   }
 }

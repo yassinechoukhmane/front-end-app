@@ -1,20 +1,13 @@
-// profile.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { DemandeurUserService } from './demandeur-user.service';
+import { ResponsableUserService } from './responsable-user.service';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-responsable-profile',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  providers: [
-    {
-      provide: DemandeurUserService,
-      useClass: DemandeurUserService
-    }
-  ],
   template: `
     <div class="container">
       <div class="profile-header">
@@ -28,8 +21,8 @@ import { DemandeurUserService } from './demandeur-user.service';
 
       <div class="profile-content">
         <div class="profile-info">
-          <h1>{{ userData.name || 'Utilisateur' }}</h1>
-          <span class="role">Demandeur</span>
+          <h1>{{ userData.name || 'Responsable' }}</h1>
+          <span class="role">Responsable</span>
         </div>
 
         <div class="info-sections">
@@ -78,7 +71,7 @@ import { DemandeurUserService } from './demandeur-user.service';
                 <div class="stat-icon">📝</div>
                 <div class="stat-info">
                   <span class="stat-value">{{ userStats.totalRequests || 0 }}</span>
-                  <span class="stat-label">Demandes Totales</span>
+                  <span class="stat-label">Demandes Gérées</span>
                 </div>
               </div>
               <div class="stat-card">
@@ -89,10 +82,10 @@ import { DemandeurUserService } from './demandeur-user.service';
                 </div>
               </div>
               <div class="stat-card">
-                <div class="stat-icon">⏳</div>
+                <div class="stat-icon">❌</div>
                 <div class="stat-info">
-                  <span class="stat-value">{{ userStats.pendingRequests || 0 }}</span>
-                  <span class="stat-label">Demandes en Attente</span>
+                  <span class="stat-value">{{ userStats.rejectedRequests || 0 }}</span>
+                  <span class="stat-label">Demandes Rejetées</span>
                 </div>
               </div>
             </div>
@@ -351,9 +344,10 @@ import { DemandeurUserService } from './demandeur-user.service';
         grid-template-columns: 1fr;
       }
     }
-  `]
+  `],
+  providers: [ResponsableUserService]
 })
-export class ProfileComponent implements OnInit {
+export class ResponsableProfileComponent implements OnInit {
   userData: any = {
     name: '',
     email: '',
@@ -364,42 +358,44 @@ export class ProfileComponent implements OnInit {
   userStats: any = {
     totalRequests: 0,
     approvedRequests: 0,
-    pendingRequests: 0
+    rejectedRequests: 0
   };
 
   message: string = '';
   messageType: string = '';
 
   constructor(
-    private userService: DemandeurUserService,
+    private userService: ResponsableUserService,
     private router: Router
   ) {}
 
   ngOnInit() {
     const user = this.userService.getCurrentUser();
     this.userData = {
-      name: user.username,
-      email: user.email,
-      phone: user.phone,
-      department: user.department
+      name: user.username || 'Responsable',
+      email: user.email || '',
+      phone: user.phone || '',
+      department: user.department || ''
     };
-    this.loadUserStats();
-  }
-
-  loadUserStats() {
-    const requests = JSON.parse(localStorage.getItem('purchaseRequests') || '[]');
-    this.userStats.totalRequests = requests.length;
-    this.userStats.approvedRequests = requests.filter((r: any) => r.status === 'approved').length;
-    this.userStats.pendingRequests = requests.filter((r: any) => r.status === 'pending').length;
+    this.loadStats();
   }
 
   getUserInitials(): string {
-    if (!this.userData.name) return 'D';
+    if (!this.userData.name) return 'R';
     return this.userData.name
       .split(' ')
       .map((n: string) => n[0])
       .join('')
       .toUpperCase();
+  }
+
+  loadStats() {
+    const requests = JSON.parse(localStorage.getItem('purchaseRequests') || '[]');
+    this.userStats = {
+      totalRequests: requests.length,
+      approvedRequests: requests.filter((r: any) => r.status === 'approved').length,
+      rejectedRequests: requests.filter((r: any) => r.status === 'rejected').length
+    };
   }
 
   saveProfile() {
@@ -414,4 +410,4 @@ export class ProfileComponent implements OnInit {
       this.message = '';
     }, 3000);
   }
-}
+} 

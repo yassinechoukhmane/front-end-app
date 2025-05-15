@@ -12,6 +12,12 @@ import {  AddFournisseurComponent } from './auth/fournisseur/fournisseur.compone
 import { LatestRequestsComponent } from './auth/request/request.component';
 import { PurchasesComponent } from './auth/demandeur/purchase/purchase.component';
 import { ProjectListComponent } from './auth/createpro/projectlist.component';
+import { BcListComponent } from './auth/BC/bclist/bclist.component';
+import { FournisseurListComponent } from './auth/fournisseur/fournisseurlist.component';
+import { DemandeProjetComponent } from './auth/demande-projet/demande-projet.component';
+import { DemandeProjetDraftsComponent } from './auth/demande-projet/demande-projet-drafts.component';
+import { DemandeProjetListComponent } from './auth/demande-projet/demande-projet-list.component';
+import { ResponsableProfileComponent } from './auth/responsable/responsable-profile.component';
 
 export const routes: Routes = [
   { 
@@ -55,10 +61,32 @@ export const routes: Routes = [
   path: 'purchases', 
   component: PurchasesComponent 
 },
+{ 
+  path: 'bclist', 
+  component: BcListComponent 
+},
+{ 
+  path: 'fournisseurlist', 
+  component: FournisseurListComponent 
+},
+{ 
+  path: 'create-demande-projet', 
+  component: DemandeProjetComponent 
+},
+{ 
+  path: 'demande-projet-drafts', 
+  component: DemandeProjetDraftsComponent 
+},
+{ 
+  path: 'demande-projet-list', 
+  component: DemandeProjetListComponent 
+},
   
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
-
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'responsable-profile', 
+    component: ResponsableProfileComponent 
+  },
+  { path: '**', redirectTo: '/login' },
 ];

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-project-list',
+  selector: 'app-fournisseur-list',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
@@ -21,11 +21,11 @@ import { Router } from '@angular/router';
           </li>
         </ul>
         
-        <h2>Projects</h2>
+        <h2>Fournisseurs</h2>
         <ul>
           <li>
-            <span class="nav-link create" (click)="goToCreateProject()">
-              Create Project
+            <span class="nav-link add" (click)="goToAddFournisseur()">
+              Add Fournisseur
             </span>
           </li>
         </ul>
@@ -34,43 +34,47 @@ import { Router } from '@angular/router';
       </div>
 
       <div class="main-content">
-        <h1>LISTE DES PROJETS</h1>
+        <h1>LISTE DES FOURNISSEURS</h1>
         
         <div class="form-section">
           <div class="search-bar">
             <input 
               type="text" 
               [(ngModel)]="searchTerm" 
-              placeholder="Rechercher un projet..."
-              (input)="filterProjects()"
+              placeholder="Rechercher un fournisseur..."
+              (input)="filterFournisseurs()"
             >
           </div>
 
           <table class="data-table">
             <thead>
               <tr>
-                <th>Titre</th>
-                <th>Description</th>
+                <th>Nom</th>
+                <th>Téléphone</th>
+                <th>Email</th>
+                <th>Adresse</th>
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let project of filteredProjects">
-                <td>{{ project.name }}</td>
-                <td class="description-cell">{{ project.description }}</td>
-                <td>{{ project.date | date:'dd/MM/yyyy' }}</td>
+              <tr *ngFor="let fournisseur of filteredFournisseurs">
+                <td>{{ fournisseur.name }}</td>
+                <td>{{ fournisseur.phone }}</td>
+                <td>{{ fournisseur.email }}</td>
+                <td class="address-cell">{{ fournisseur.address }}</td>
+                <td>{{ fournisseur.date | date:'dd/MM/yyyy' }}</td>
                 <td class="actions">
-                  <button class="action-btn edit" (click)="editProject(project)">
+                  <button class="action-btn edit" (click)="editFournisseur(fournisseur)">
                     Modifier
                   </button>
-                  <button class="action-btn delete" (click)="deleteProject(project)">
+                  <button class="action-btn delete" (click)="deleteFournisseur(fournisseur)">
                     Supprimer
                   </button>
                 </td>
               </tr>
-              <tr *ngIf="filteredProjects.length === 0">
-                <td colspan="4" class="no-data">Aucun projet trouvé</td>
+              <tr *ngIf="filteredFournisseurs.length === 0">
+                <td colspan="6" class="no-data">Aucun fournisseur trouvé</td>
               </tr>
             </tbody>
           </table>
@@ -180,6 +184,7 @@ import { Router } from '@angular/router';
         &:focus {
           outline: none;
           border-color: #3498db;
+          box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
         }
       }
     }
@@ -200,8 +205,8 @@ import { Router } from '@angular/router';
         font-weight: 500;
       }
 
-      .description-cell {
-        max-width: 300px;
+      .address-cell {
+        max-width: 200px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -244,52 +249,55 @@ import { Router } from '@angular/router';
       text-align: center;
       color: #7f8c8d;
       font-style: italic;
+      padding: 20px;
     }
   `]
 })
-export class ProjectListComponent implements OnInit {
+export class FournisseurListComponent implements OnInit {
   currentDate = new Date();
-  projects: any[] = [];
-  filteredProjects: any[] = [];
+  fournisseurs: any[] = [];
+  filteredFournisseurs: any[] = [];
   searchTerm: string = '';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.loadProjects();
+    this.loadFournisseurs();
   }
 
-  loadProjects() {
-    const savedProjects = localStorage.getItem('projects');
-    if (savedProjects) {
-      this.projects = JSON.parse(savedProjects);
-      this.filteredProjects = [...this.projects];
+  loadFournisseurs() {
+    const savedFournisseurs = localStorage.getItem('fournisseurs');
+    if (savedFournisseurs) {
+      this.fournisseurs = JSON.parse(savedFournisseurs);
+      this.filteredFournisseurs = [...this.fournisseurs];
     }
   }
 
-  filterProjects() {
+  filterFournisseurs() {
     if (!this.searchTerm) {
-      this.filteredProjects = [...this.projects];
+      this.filteredFournisseurs = [...this.fournisseurs];
       return;
     }
 
     const search = this.searchTerm.toLowerCase();
-    this.filteredProjects = this.projects.filter(project => 
-      project.name.toLowerCase().includes(search) ||
-      project.description.toLowerCase().includes(search)
+    this.filteredFournisseurs = this.fournisseurs.filter(fournisseur => 
+      fournisseur.name.toLowerCase().includes(search) ||
+      fournisseur.phone.includes(search) ||
+      fournisseur.email.toLowerCase().includes(search) ||
+      fournisseur.address.toLowerCase().includes(search)
     );
   }
 
-  editProject(project: any) {
-    localStorage.setItem('editingProject', JSON.stringify(project));
-    this.router.navigate(['/createpro']);
+  editFournisseur(fournisseur: any) {
+    localStorage.setItem('editingFournisseur', JSON.stringify(fournisseur));
+    this.router.navigate(['/add-fournisseur']);
   }
 
-  deleteProject(project: any) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
-      this.projects = this.projects.filter(p => p.name !== project.name);
-      localStorage.setItem('projects', JSON.stringify(this.projects));
-      this.filterProjects();
+  deleteFournisseur(fournisseur: any) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce fournisseur ?')) {
+      this.fournisseurs = this.fournisseurs.filter(f => f.phone !== fournisseur.phone);
+      localStorage.setItem('fournisseurs', JSON.stringify(this.fournisseurs));
+      this.filterFournisseurs();
     }
   }
 
@@ -297,7 +305,7 @@ export class ProjectListComponent implements OnInit {
     this.router.navigate(['/responsable']);
   }
 
-  goToCreateProject() {
-    this.router.navigate(['/createpro']);
+  goToAddFournisseur() {
+    this.router.navigate(['/add-fournisseur']);
   }
-}
+} 

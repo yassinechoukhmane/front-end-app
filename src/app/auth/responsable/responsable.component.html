@@ -23,9 +23,10 @@
       <div class="header">
         <span class="date">{{ today | date: 'dd/MM/yyyy' }}</span>
         <div class="account">
-          <a routerLink="/profile" class="account-link">👤 {{ username }}</a>
+          <div class="account-link" style="cursor: pointer;" (click)="goToProfile()">
+            👤 <span class="user-info">{{ username }}</span>
+          </div>
         </div>
-        
       </div>
   
       <div class="welcome">
@@ -46,6 +47,10 @@
             <label>CREATE PROJET :</label>
             <button class="btn" (click)="goToCreatePro()">CREATE</button>
 
+          </div>
+          <div class="action">
+            <label>CREATE DEMANDE PROJET :</label>
+            <button class="btn" (click)="goToCreateDemandeProjet()">CREATE</button>
           </div>
           <div class="action">
             <label>ADD FOURNISSEUR :</label>

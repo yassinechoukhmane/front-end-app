@@ -13,6 +13,7 @@ interface Request {
   date: Date;
   status: 'pending' | 'approved' | 'rejected';
   designation?: string;
+  isExpanded: boolean;
 }
 
 @Component({

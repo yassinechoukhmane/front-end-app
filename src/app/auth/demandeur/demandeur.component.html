@@ -8,12 +8,7 @@
       </ul>
       <h4>Purchases</h4>
       <ul>
-        <li>
-          <a class="menu-button">
-            <span class="icon">🛒</span>
-            <span class="text" (click)="goToPurchases()">All purchases</span>
-          </a>
-        </li>
+        <li><a routerLink="/purchases" routerLinkActive="active">🛒 All purchases</a></li>
         <li><a routerLink="/drafts" routerLinkActive="active">📝 Drafts</a></li>
       </ul>
     </nav>
@@ -39,37 +34,30 @@
 
         <div class="form-grid">
           <div class="form-group">
-            <label for="category">Category</label>
-            <select id="category" [(ngModel)]="request.category" name="category" required class="form-control">
-              <option value="" disabled selected>Select category</option>
-              <option value="projet">Project</option>
-              <option value="stock">Stock</option>
-              <option value="divers">Miscellaneous</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <input id="subject" type="text" [(ngModel)]="request.subject" name="subject" 
-                   placeholder="Enter subject" required class="form-control">
-          </div>
-
-          <div class="form-group">
-            <label for="details">Request Details</label>
-            <input id="details" type="text" [(ngModel)]="request.details" name="details" 
-                   placeholder="Describe your request" required class="form-control">
-          </div>
-
-          <div class="form-group">
-            <label for="designation">Designation</label>
-            <input id="designation" type="text" [(ngModel)]="request.designation" name="designation" 
-                   placeholder="Enter designation" required class="form-control">
-          </div>
-
-          <div class="form-group">
             <label for="quantity">Quantity</label>
-            <input id="quantity" type="number" [(ngModel)]="request.qte" name="qte"
-                   min="1" required class="form-control" placeholder="0">
+            <input 
+              id="quantity" 
+              type="number" 
+              [(ngModel)]="request.qte" 
+              name="qte"
+              min="1" 
+              required 
+              class="form-control" 
+              placeholder="Enter quantity"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea 
+              id="description" 
+              [(ngModel)]="request.details" 
+              name="details" 
+              required 
+              class="form-control description-area" 
+              placeholder="Enter description"
+              rows="4"
+            ></textarea>
           </div>
         </div>
 
