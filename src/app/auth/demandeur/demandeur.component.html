@@ -18,7 +18,9 @@
     <div class="header">
       <div class="date">📅 {{ currentDate | date: 'dd/MM/yyyy' }}</div>
       <div class="account">
-        <a routerLink="/profile" class="account-link">👤 {{ username }}</a>
+        <div class="account-link" style="cursor: pointer;" (click)="goToProfile()">
+          👤 <span class="username">{{ username }}</span>
+        </div>
       </div>
     </div>
 

@@ -1,20 +1,15 @@
 // profile.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DemandeurUserService } from './demandeur-user.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
-  providers: [
-    {
-      provide: DemandeurUserService,
-      useClass: DemandeurUserService
-    }
-  ],
+  imports: [CommonModule, FormsModule],
+  providers: [DemandeurUserService],
   template: `
     <div class="container">
       <div class="profile-header">
@@ -28,7 +23,7 @@ import { DemandeurUserService } from './demandeur-user.service';
 
       <div class="profile-content">
         <div class="profile-info">
-          <h1>{{ userData.name || 'Utilisateur' }}</h1>
+          <h1>{{ userData.name || 'Demandeur' }}</h1>
           <span class="role">Demandeur</span>
         </div>
 
@@ -52,22 +47,6 @@ import { DemandeurUserService } from './demandeur-user.service';
                   placeholder="Votre email"
                 >
               </div>
-              <div class="info-item">
-                <label>Téléphone</label>
-                <input 
-                  type="tel" 
-                  [(ngModel)]="userData.phone" 
-                  placeholder="Votre numéro"
-                >
-              </div>
-              <div class="info-item">
-                <label>Département</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="userData.department" 
-                  placeholder="Votre département"
-                >
-              </div>
             </div>
           </div>
 
@@ -77,24 +56,43 @@ import { DemandeurUserService } from './demandeur-user.service';
               <div class="stat-card">
                 <div class="stat-icon">📝</div>
                 <div class="stat-info">
-                  <span class="stat-value">{{ userStats.totalRequests || 0 }}</span>
+                  <span class="stat-value">{{ stats.totalRequests }}</span>
                   <span class="stat-label">Demandes Totales</span>
-                </div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-icon">✅</div>
-                <div class="stat-info">
-                  <span class="stat-value">{{ userStats.approvedRequests || 0 }}</span>
-                  <span class="stat-label">Demandes Approuvées</span>
                 </div>
               </div>
               <div class="stat-card">
                 <div class="stat-icon">⏳</div>
                 <div class="stat-info">
-                  <span class="stat-value">{{ userStats.pendingRequests || 0 }}</span>
-                  <span class="stat-label">Demandes en Attente</span>
+                  <span class="stat-value">{{ stats.pendingRequests }}</span>
+                  <span class="stat-label">En Attente</span>
                 </div>
               </div>
+              <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                  <span class="stat-value">{{ stats.approvedRequests }}</span>
+                  <span class="stat-label">Approuvées</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">❌</div>
+                <div class="stat-info">
+                  <span class="stat-value">{{ stats.rejectedRequests }}</span>
+                  <span class="stat-label">Rejetées</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section navigation-section">
+            <h2>Navigation</h2>
+            <div class="nav-buttons">
+              <button class="btn btn-back" (click)="goBack()">
+                <i class="icon">⬅️</i> Retour
+              </button>
+              <button class="btn btn-logout" (click)="logout()">
+                <i class="icon">🚪</i> Se déconnecter
+              </button>
             </div>
           </div>
         </div>
@@ -165,6 +163,7 @@ import { DemandeurUserService } from './demandeur-user.service';
 
     .profile-info {
       margin-bottom: 40px;
+      text-align: center;
     }
 
     .profile-info h1 {
@@ -181,6 +180,8 @@ import { DemandeurUserService } from './demandeur-user.service';
     .info-sections {
       display: grid;
       gap: 30px;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .section {
@@ -218,26 +219,110 @@ import { DemandeurUserService } from './demandeur-user.service';
 
     .info-item input {
       padding: 12px;
-      border: 2px solid #e9ecef;
+      border: 1px solid #e9ecef;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 15px;
       transition: all 0.3s ease;
     }
 
     .info-item input:focus {
+      outline: none;
       border-color: #3498db;
       box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-      outline: none;
+    }
+
+    .navigation-section {
+      text-align: center;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      min-width: 150px;
+      justify-content: center;
+    }
+
+    .btn-back {
+      background: #95a5a6;
+      color: white;
+    }
+
+    .btn-back:hover {
+      background: #7f8c8d;
+      transform: translateY(-2px);
+    }
+
+    .btn-logout {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .btn-logout:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+    }
+
+    .btn-save {
+      background: #3498db;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .actions {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .alert {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .alert.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .alert.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .icon {
+      font-size: 18px;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
+      margin-top: 15px;
     }
 
     .stat-card {
-      background: #ffffff;
+      background: white;
       padding: 20px;
       border-radius: 10px;
       display: flex;
@@ -249,14 +334,18 @@ import { DemandeurUserService } from './demandeur-user.service';
 
     .stat-card:hover {
       transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .stat-icon {
       font-size: 24px;
-      padding: 12px;
-      background: #f0f9ff;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
       border-radius: 8px;
-      color: #3498db;
     }
 
     .stat-info {
@@ -273,98 +362,21 @@ import { DemandeurUserService } from './demandeur-user.service';
     .stat-label {
       font-size: 14px;
       color: #7f8c8d;
-    }
-
-    .actions {
-      margin-top: 30px;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-    }
-
-    .btn-save {
-      background-color: #3498db;
-      color: white;
-    }
-
-    .btn-save:hover {
-      background-color: #2980b9;
-    }
-
-    .alert {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      border-radius: 8px;
-      color: white;
-      font-weight: 500;
-      animation: slideIn 0.3s ease;
-    }
-
-    .alert.success {
-      background-color: #27ae60;
-    }
-
-    .alert.error {
-      background-color: #e74c3c;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        margin: 10px;
-      }
-
-      .profile-content {
-        padding: 60px 20px 20px;
-      }
-
-      .profile-avatar {
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
+      margin-top: 4px;
     }
   `]
 })
 export class ProfileComponent implements OnInit {
   userData: any = {
     name: '',
-    email: '',
-    phone: '',
-    department: ''
+    email: ''
   };
 
-  userStats: any = {
+  stats = {
     totalRequests: 0,
+    pendingRequests: 0,
     approvedRequests: 0,
-    pendingRequests: 0
+    rejectedRequests: 0
   };
 
   message: string = '';
@@ -378,28 +390,29 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     const user = this.userService.getCurrentUser();
     this.userData = {
-      name: user.username,
-      email: user.email,
-      phone: user.phone,
-      department: user.department
+      name: user.username || '',
+      email: user.email || ''
     };
-    this.loadUserStats();
+    this.loadStats();
   }
 
-  loadUserStats() {
+  loadStats() {
+    // Charger les demandes depuis le localStorage
     const requests = JSON.parse(localStorage.getItem('purchaseRequests') || '[]');
-    this.userStats.totalRequests = requests.length;
-    this.userStats.approvedRequests = requests.filter((r: any) => r.status === 'approved').length;
-    this.userStats.pendingRequests = requests.filter((r: any) => r.status === 'pending').length;
+    
+    // Calculer les statistiques
+    this.stats = {
+      totalRequests: requests.length,
+      pendingRequests: requests.filter((r: any) => r.status === 'pending').length,
+      approvedRequests: requests.filter((r: any) => r.status === 'approved').length,
+      rejectedRequests: requests.filter((r: any) => r.status === 'rejected').length
+    };
   }
 
   getUserInitials(): string {
-    if (!this.userData.name) return 'D';
     return this.userData.name
-      .split(' ')
-      .map((n: string) => n[0])
-      .join('')
-      .toUpperCase();
+      ? this.userData.name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
+      : 'D';
   }
 
   saveProfile() {
@@ -407,11 +420,21 @@ export class ProfileComponent implements OnInit {
     this.showMessage('Profil mis à jour avec succès', 'success');
   }
 
+  goBack() {
+    this.router.navigate(['/demandeur']);
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
+  }
+
   showMessage(msg: string, type: string) {
     this.message = msg;
     this.messageType = type;
     setTimeout(() => {
       this.message = '';
+      this.messageType = '';
     }, 3000);
   }
 }

@@ -130,4 +130,13 @@ export class DemandeurComponent implements OnInit {
     
     this.request.qte = value;
   }
+
+  goToProfile() {
+    console.log('Navigation vers le profil...'); // Pour debug
+    this.router.navigate(['/profile']).then(() => {
+      console.log('Navigation terminée');
+    }).catch(err => {
+      console.error('Erreur de navigation:', err);
+    });
+  }
 }
