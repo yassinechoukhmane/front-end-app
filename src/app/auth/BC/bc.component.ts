@@ -84,6 +84,19 @@ export class BcComponent implements OnInit {
     this.resetForm();
   }
 
+  validateMontant(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = parseFloat(input.value);
+    
+    // Empêcher les nombres négatifs
+    if (value < 0) {
+      value = 0;
+      input.value = '0';
+    }
+    
+    this.montantTotal = value;
+  }
+
   validateForm(): boolean {
     return Boolean(this.reference) && 
            Boolean(this.fournisseurId) && 

@@ -127,34 +127,103 @@
 }
 
 .form-group {
-  width: 100%;
+  margin-bottom: 25px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #333;
+    font-size: 15px;
+  }
+
+  // Style commun pour les inputs
+  input, textarea {
+    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 15px;
+
+    &:focus {
+      outline: none;
+      border-color: #2196F3;
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  // Style spécifique pour le champ quantité
+  input[type="number"] {
+    height: 45px;
+    padding: 0 15px;
+    background-color: #fff;
+    -moz-appearance: textfield; // Supprime les flèches sur Firefox
+    
+    // Supprime les flèches sur Chrome, Safari, Edge
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:hover {
+      border-color: #bdbdbd;
+    }
+
+    &:focus {
+      background-color: #fff;
+    }
+  }
+
+  // Style spécifique pour le champ description
+  textarea {
+    min-height: 200px;
+    padding: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    font-family: inherit;
+    background-color: #fff;
+
+    &:hover {
+      border-color: #bdbdbd;
+    }
+  }
 }
 
-.description-area {
-  width: 100%;
-  resize: vertical;
-  min-height: 100px;
+// Style pour le conteneur du champ quantité
+.quantity-field {
+  max-width: 200px; // Limite la largeur du champ quantité
+  
+  input {
+    text-align: center; // Centre le nombre
+    font-weight: 500;
+  }
 }
 
-.form-control {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: border-color 0.3s;
+// Ajout d'un style pour indiquer la validation
+input:invalid,
+textarea:invalid {
+  border-color: #ff5252;
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1);
+  }
 }
 
-.form-control:focus {
-  border-color: #3498db;
-  outline: none;
+// Style pour le message d'erreur si nécessaire
+.error-message {
+  color: #ff5252;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
 }
 
-label {
+input:invalid + .error-message {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #2c3e50;
 }
 
 /* Buttons */

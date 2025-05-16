@@ -118,4 +118,16 @@ export class DemandeurComponent implements OnInit {
     this.router.navigate(['/purchases']);
   }
   
+  validateQuantity(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = parseInt(input.value);
+    
+    // Empêcher les nombres négatifs
+    if (value < 0) {
+      value = 0;
+      input.value = '0';
+    }
+    
+    this.request.qte = value;
+  }
 }

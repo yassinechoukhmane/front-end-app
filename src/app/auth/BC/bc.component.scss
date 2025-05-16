@@ -423,6 +423,54 @@
     transition: all 0.3s ease;
     font-size: 14px;
 }
+
+.data-table {
+    input[type="number"] {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        -moz-appearance: textfield;
+        
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        &:hover {
+            border-color: #bdbdbd;
+        }
+
+        &:invalid {
+            border-color: #ff5252;
+            
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1);
+            }
+        }
+    }
+}
+
+.montant-input.invalid {
+    border-color: #ff5252;
+}
+
+.message-box {
+    &.error {
+        background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+}
   
   
   

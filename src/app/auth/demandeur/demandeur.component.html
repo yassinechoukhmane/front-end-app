@@ -33,18 +33,17 @@
         </div>
 
         <div class="form-grid">
-          <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input 
-              id="quantity" 
-              type="number" 
-              [(ngModel)]="request.qte" 
+          <div class="form-group quantity-field">
+            <label for="quantity">Quantité:</label>
+            <input
+              type="number"
+              id="quantity"
+              [(ngModel)]="request.qte"
               name="qte"
-              min="1" 
-              required 
-              class="form-control" 
-              placeholder="Enter quantity"
-            >
+              min="0"
+              (input)="validateQuantity($event)"
+              placeholder="Entrez la quantité"
+              required>
           </div>
 
           <div class="form-group">
@@ -53,6 +52,7 @@
               id="details"
               [(ngModel)]="request.details"
               name="details"
+              placeholder="Entrez une description détaillée..."
               required></textarea>
           </div>
         </div>

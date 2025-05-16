@@ -55,7 +55,15 @@
           <tr>
             <td><input type="text" [(ngModel)]="demandeAchatId" placeholder="Demande d'achat ID" /></td>
             <td><input type="text" [(ngModel)]="projetId" placeholder="Projet ID" /></td>
-            <td><input type="number" [(ngModel)]="montantTotal" placeholder="Montant" /></td>
+            <td>
+              <input 
+                type="number" 
+                [(ngModel)]="montantTotal" 
+                (input)="validateMontant($event)"
+                min="0"
+                placeholder="Montant" 
+                class="montant-input" />
+            </td>
           </tr>
         </table>
 
