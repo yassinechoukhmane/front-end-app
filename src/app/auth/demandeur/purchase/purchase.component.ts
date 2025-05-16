@@ -3,6 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+interface Purchase {
+  requestNumber: string;
+  qte: number;
+  details: string;
+  date: Date;
+  status: string;
+}
+
 @Component({
   selector: 'app-purchases',
   standalone: true,
@@ -44,7 +52,7 @@ import { FormsModule } from '@angular/forms';
               </div>
               <div class="detail-group">
                 <label>Description:</label>
-                <span>{{ purchase.description }}</span>
+                <span>{{ purchase.details }}</span>
               </div>
             </div>
           </div>
@@ -226,7 +234,7 @@ import { FormsModule } from '@angular/forms';
   `]
 })
 export class PurchasesComponent implements OnInit {
-  purchases: any[] = [];
+  purchases: Purchase[] = [];
   searchTerm: string = '';
 
   constructor(private router: Router) {}
@@ -236,14 +244,20 @@ export class PurchasesComponent implements OnInit {
   }
 
   loadPurchases() {
-    const savedPurchases = localStorage.getItem('purchaseRequests');
-    this.purchases = savedPurchases ? JSON.parse(savedPurchases) : [];
+    const purchaseRequests = JSON.parse(localStorage.getItem('purchaseRequests') || '[]');
+    const draftRequests = JSON.parse(localStorage.getItem('draftRequests') || '[]');
+    
+    this.purchases = [...purchaseRequests, ...draftRequests].map(purchase => ({
+      ...purchase,
+      date: new Date(purchase.date)
+    }));
   }
 
   get filteredPurchases() {
     return this.purchases.filter(purchase => 
-      purchase.requestNumber?.toString().toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      purchase.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+      purchase.requestNumber.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      purchase.details.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      purchase.status.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 }

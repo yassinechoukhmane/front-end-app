@@ -6,6 +6,14 @@ import { UserService } from '../demandeur/user.service';
 import { RouterModule } from '@angular/router';
 import { DemandeurUserService } from './demandeur-user.service';
 
+interface Request {
+  qte: number;
+  details: string;
+  requestNumber: string;
+  date: Date;
+  status?: string;
+}
+
 @Component({
   selector: 'app-demandeur',
   standalone: true,
@@ -24,7 +32,7 @@ export class DemandeurComponent implements OnInit {
   username: string = '';
   requestNumber: string = '';
 
-  request = {
+  request: Request = {
     qte: 0,
     details: '',
     requestNumber: '',
@@ -59,7 +67,7 @@ export class DemandeurComponent implements OnInit {
   }
 
   submitRequest() {
-    const completeRequest = {
+    const completeRequest: Request = {
       ...this.request,
       requestNumber: this.requestNumber,
       date: new Date(),
@@ -79,7 +87,7 @@ export class DemandeurComponent implements OnInit {
       date: new Date()
     };
     
-    alert('Request submitted successfully!');
+    alert('Demande soumise avec succès !');
   }
 
   saveAsDraft() {
