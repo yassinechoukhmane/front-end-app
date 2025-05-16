@@ -8,6 +8,7 @@ import { ResponsableUserService } from './responsable-user.service';
   selector: 'app-responsable-profile',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
+  providers: [ResponsableUserService],
   template: `
     <div class="container">
       <div class="profile-header">
@@ -45,22 +46,6 @@ import { ResponsableUserService } from './responsable-user.service';
                   placeholder="Votre email"
                 >
               </div>
-              <div class="info-item">
-                <label>Téléphone</label>
-                <input 
-                  type="tel" 
-                  [(ngModel)]="userData.phone" 
-                  placeholder="Votre numéro"
-                >
-              </div>
-              <div class="info-item">
-                <label>Département</label>
-                <input 
-                  type="text" 
-                  [(ngModel)]="userData.department" 
-                  placeholder="Votre département"
-                >
-              </div>
             </div>
           </div>
 
@@ -88,6 +73,18 @@ import { ResponsableUserService } from './responsable-user.service';
                   <span class="stat-label">Demandes Rejetées</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="section navigation-section">
+            <h2>Navigation</h2>
+            <div class="nav-buttons">
+              <button class="btn btn-back" (click)="goBack()">
+                <i class="icon">⬅️</i> Retour
+              </button>
+              <button class="btn btn-logout" (click)="logout()">
+                <i class="icon">🚪</i> Se déconnecter
+              </button>
             </div>
           </div>
         </div>
@@ -158,6 +155,7 @@ import { ResponsableUserService } from './responsable-user.service';
 
     .profile-info {
       margin-bottom: 40px;
+      text-align: center;
     }
 
     .profile-info h1 {
@@ -174,6 +172,8 @@ import { ResponsableUserService } from './responsable-user.service';
     .info-sections {
       display: grid;
       gap: 30px;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .section {
@@ -211,16 +211,16 @@ import { ResponsableUserService } from './responsable-user.service';
 
     .info-item input {
       padding: 12px;
-      border: 2px solid #e9ecef;
+      border: 1px solid #e9ecef;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 15px;
       transition: all 0.3s ease;
     }
 
     .info-item input:focus {
+      outline: none;
       border-color: #3498db;
       box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-      outline: none;
     }
 
     .stats-grid {
@@ -230,26 +230,17 @@ import { ResponsableUserService } from './responsable-user.service';
     }
 
     .stat-card {
-      background: #ffffff;
+      background: white;
       padding: 20px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       gap: 15px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
     }
 
     .stat-icon {
       font-size: 24px;
-      padding: 12px;
-      background: #f0f9ff;
-      border-radius: 8px;
-      color: #3498db;
     }
 
     .stat-info {
@@ -268,91 +259,99 @@ import { ResponsableUserService } from './responsable-user.service';
       color: #7f8c8d;
     }
 
-    .actions {
-      margin-top: 30px;
+    .navigation-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+    }
+
+    .nav-buttons {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
     }
 
     .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
       transition: all 0.3s ease;
-      border: none;
+    }
+
+    .btn-back {
+      background: #95a5a6;
+      color: white;
+      min-width: 150px;
+      justify-content: center;
+    }
+
+    .btn-back:hover {
+      background: #7f8c8d;
+      transform: translateY(-2px);
+    }
+
+    .btn-logout {
+      background: #e74c3c;
+      color: white;
+      min-width: 150px;
+      justify-content: center;
+    }
+
+    .btn-logout:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
     }
 
     .btn-save {
-      background-color: #3498db;
+      background: #3498db;
       color: white;
     }
 
     .btn-save:hover {
-      background-color: #2980b9;
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+
+    .icon {
+      font-size: 18px;
+    }
+
+    .actions {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
     }
 
     .alert {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 25px;
+      margin-top: 20px;
+      padding: 12px 20px;
       border-radius: 8px;
-      color: white;
-      font-weight: 500;
-      animation: slideIn 0.3s ease;
+      text-align: center;
     }
 
     .alert.success {
-      background-color: #27ae60;
+      background: #d4edda;
+      color: #155724;
     }
 
     .alert.error {
-      background-color: #e74c3c;
+      background: #f8d7da;
+      color: #721c24;
     }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        margin: 10px;
-      }
-
-      .profile-content {
-        padding: 60px 20px 20px;
-      }
-
-      .profile-avatar {
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  `],
-  providers: [ResponsableUserService]
+  `]
 })
 export class ResponsableProfileComponent implements OnInit {
   userData: any = {
     name: '',
-    email: '',
-    phone: '',
-    department: ''
+    email: ''
   };
 
   userStats: any = {
@@ -372,29 +371,24 @@ export class ResponsableProfileComponent implements OnInit {
   ngOnInit() {
     const user = this.userService.getCurrentUser();
     this.userData = {
-      name: user.username || 'Responsable',
-      email: user.email || '',
-      phone: user.phone || '',
-      department: user.department || ''
+      name: user.username || '',
+      email: user.email || ''
     };
     this.loadStats();
   }
 
   getUserInitials(): string {
-    if (!this.userData.name) return 'R';
     return this.userData.name
-      .split(' ')
-      .map((n: string) => n[0])
-      .join('')
-      .toUpperCase();
+      ? this.userData.name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
+      : 'R';
   }
 
   loadStats() {
-    const requests = JSON.parse(localStorage.getItem('purchaseRequests') || '[]');
+    // Ici vous pouvez charger les statistiques réelles si nécessaire
     this.userStats = {
-      totalRequests: requests.length,
-      approvedRequests: requests.filter((r: any) => r.status === 'approved').length,
-      rejectedRequests: requests.filter((r: any) => r.status === 'rejected').length
+      totalRequests: 0,
+      approvedRequests: 0,
+      rejectedRequests: 0
     };
   }
 
@@ -408,6 +402,18 @@ export class ResponsableProfileComponent implements OnInit {
     this.messageType = type;
     setTimeout(() => {
       this.message = '';
+      this.messageType = '';
     }, 3000);
+  }
+
+  goBack() {
+    this.router.navigate(['/responsable']);
+  }
+
+  logout() {
+    // Clear user data from localStorage
+    localStorage.clear();
+    // Navigate to login page
+    this.router.navigate(['/login']);
   }
 } 

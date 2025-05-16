@@ -21,6 +21,10 @@ import { ResponsableProfileComponent } from './auth/responsable/responsable-prof
 
 export const routes: Routes = [
   { 
+    path: 'responsable-profile', 
+    component: ResponsableProfileComponent 
+  },
+  { 
     path: 'demandeur',
     component: DemandeurComponent,
   },
@@ -85,8 +89,5 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'responsable-profile', 
-    component: ResponsableProfileComponent 
-  },
   { path: '**', redirectTo: '/login' },
 ];

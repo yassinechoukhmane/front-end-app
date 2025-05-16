@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BCStatus, BC } from './bc.models';
 
 @Component({
   selector: 'app-bc',
@@ -17,6 +18,8 @@ export class BcComponent implements OnInit {
   demandeAchatId: string = '';
   projetId: string = '';
   montantTotal: number = 0;
+  status: BCStatus = BCStatus.ISSUED;
+  statuses = Object.values(BCStatus);
   message: string = '';
   messageType: string = '';
   activeTab: string = 'home';
@@ -24,7 +27,6 @@ export class BcComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Vérifier s'il y a un brouillon en cours d'édition
     const currentDraft = localStorage.getItem('currentBcDraft');
     if (currentDraft) {
       const draft = JSON.parse(currentDraft);
@@ -33,20 +35,20 @@ export class BcComponent implements OnInit {
       this.demandeAchatId = draft.demandeAchatId;
       this.projetId = draft.projetId;
       this.montantTotal = draft.montantTotal;
-      // Supprimer le brouillon en cours d'édition
+      this.status = draft.status || BCStatus.ISSUED;
       localStorage.removeItem('currentBcDraft');
     }
   }
 
   saveAsDraft() {
-    const draft = {
+    const draft: BC = {
       reference: this.reference,
       date: this.currentDate,
       fournisseurId: this.fournisseurId,
       demandeAchatId: this.demandeAchatId,
       projetId: this.projetId,
       montantTotal: this.montantTotal,
-      status: 'draft'
+      status: this.status
     };
 
     const drafts = JSON.parse(localStorage.getItem('bcDrafts') || '[]');
@@ -65,14 +67,14 @@ export class BcComponent implements OnInit {
       return;
     }
 
-    const order = {
+    const order: BC = {
       reference: this.reference,
       date: this.currentDate,
       fournisseurId: this.fournisseurId,
       demandeAchatId: this.demandeAchatId,
       projetId: this.projetId,
       montantTotal: this.montantTotal,
-      status: 'submitted'
+      status: this.status
     };
 
     const orders = JSON.parse(localStorage.getItem('bons_commande') || '[]');
@@ -111,6 +113,7 @@ export class BcComponent implements OnInit {
     this.demandeAchatId = '';
     this.projetId = '';
     this.montantTotal = 0;
+    this.status = BCStatus.ISSUED;
   }
 
   setActiveTab(tab: string) {

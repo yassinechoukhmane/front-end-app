@@ -23,8 +23,9 @@
       <div class="header">
         <span class="date">{{ today | date: 'dd/MM/yyyy' }}</span>
         <div class="account">
-          <div class="account-link" style="cursor: pointer;" (click)="goToProfile()">
-            👤 <span class="user-info">{{ username }}</span>
+          <div class="account-link" (click)="goToProfile()">
+            <span style="font-size: 20px;">👤</span>
+            <span class="user-info">{{ username }}</span>
           </div>
         </div>
       </div>

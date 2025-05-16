@@ -51,11 +51,10 @@ export class ResponsableComponent implements OnInit {
     this.router.navigate(['/fournisseurlist']);
   }
   goToProfile() {
-    console.log('Navigation vers le profil responsable...'); // Pour debug
     this.router.navigate(['/responsable-profile']).then(() => {
-      console.log('Navigation terminée'); // Pour debug
+      console.log('Navigation terminée');
     }).catch(err => {
-      console.error('Erreur de navigation:', err); // Pour debug
+      console.error('Erreur de navigation:', err);
     });
   }
 }
