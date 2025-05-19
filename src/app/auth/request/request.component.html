@@ -1,0 +1,53 @@
+<div class="dashboard-container">
+    <aside class="sidebar">
+      <h2>My app</h2>
+  
+      <nav>
+        <p>Discover</p>
+        <ul>
+          <li><i class="icon-home"></i> Home</li>
+          <li><i class="icon-search"></i> Browser</li>
+        </ul>
+  
+        <p>Requests</p>
+        <ul>
+          <li>All requests</li>
+          <li>Approved requests</li>
+          <li>Rejected requests</li>
+        </ul>
+  
+        <p>Purchases</p>
+        <ul>
+          <li>All purchases</li>
+          <li>Drafts</li>
+          <li>History</li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <main class="content">
+      <header class="header">
+        <div class="date">🗓️ 01/01/2025</div>
+        <div class="account">👤 My Account</div>
+      </header>
+  
+      <section class="welcome">
+        <p>Welcome Mr / Mrs ****</p>
+      </section>
+  
+      <section class="latest-requests">
+        <h3>LATEST REQUESTS :</h3>
+  
+        <div class="request-row" *ngFor="let req of requests">
+          <div class="request-box">{{ req.id }}</div>
+          <div class="request-box">the subject</div>
+          <div class="request-box">Request Number / Date</div>
+  
+          <div class="actions">
+            <button class="approve">APPROVE</button>
+            <button class="decline">DECLINE</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>

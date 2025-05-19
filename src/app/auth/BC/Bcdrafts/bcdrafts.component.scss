@@ -1,0 +1,95 @@
+.drafts-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+h2 {
+  color: #2f3542;
+  margin-bottom: 20px;
+}
+
+.no-drafts {
+  padding: 20px;
+  text-align: center;
+  color: #57606f;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.draft-item {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.draft-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f2f6;
+}
+
+.draft-number {
+  font-weight: 500;
+  color: #2f3542;
+}
+
+.draft-date {
+  color: #57606f;
+  font-size: 14px;
+}
+
+.draft-details p {
+  margin-bottom: 5px;
+  color: #57606f;
+}
+
+.draft-details strong {
+  color: #2f3542;
+}
+
+.draft-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+.btn-edit {
+  background: #1e90ff;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #3742fa;
+}
+
+.btn-delete {
+  background: #ff6b81;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #ff4757;
+}
+.alert-message {
+background-color: #dff9fb;
+color: #130f40;
+padding: 10px;
+border: 1px solid #c7ecee;
+border-radius: 5px;
+margin-bottom: 15px;
+font-weight: 500;
+}
